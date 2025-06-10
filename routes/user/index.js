@@ -41,11 +41,14 @@ router.post(
     }
   }
   */
-  userController.loginUser
+  async (req, res) => {
+    const result = await userController.loginUser(req.body);
+    return res.status(result.errorCode).json(result);
+  }
 );
 
 router.post(
-  "/refresh-token",
+  "/auth/refresh-token",
   /*
   #swagger.tags = ["Auth"]
   #swagger.description = "API route for refreshing the expired access token"

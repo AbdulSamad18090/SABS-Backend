@@ -25,22 +25,22 @@ const createUser = async (req, res) => {
   }
 };
 
-const loginUser = async (req, res) => {
+const loginUser = async (body) => {
   try {
-    const userData = await userService.loginUser(req.body);
-
-    return res.status(200).json({
+    const userData = await userService.loginUser(body);
+    return {
       success: true,
+      errorCode: 200,
       message: "Login successful",
-      data: userData, // safer than spreading sensitive fields
-    });
+      data: userData,
+    };
   } catch (error) {
-    return res.status(400).json({
-      // 400 for bad credentials, not 500
+    return {
       success: false,
+      errorCode: 400,
       message: "Failed to login",
       error: error.message,
-    });
+    };
   }
 };
 
