@@ -21,10 +21,10 @@
         }
       }
     },
-    "/api/user/create": {
+    "/api/auth/signup": {
       "post": {
         "tags": [
-          "User"
+          "Auth"
         ],
         "description": "Payload is required",
         "responses": {
@@ -44,6 +44,58 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "Route for login user",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Login"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/refresh-token": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "API route for refreshing the expired access token",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshToken"
               }
             }
           }
@@ -174,11 +226,33 @@
           },
           "password": {
             "type": "string",
-            "example": "hashed password"
+            "example": "password"
           },
           "role": {
             "type": "string",
             "example": "doctor / patient"
+          }
+        }
+      },
+      "Login": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "Your email"
+          },
+          "password": {
+            "type": "string",
+            "example": "Your password"
+          }
+        }
+      },
+      "RefreshToken": {
+        "type": "object",
+        "properties": {
+          "refreshToken": {
+            "type": "string",
+            "example": "valid refresh token"
           }
         }
       }

@@ -1,5 +1,6 @@
 const { Model } = require("objection");
 const DoctorProfile = require("./DoctorProfile");
+const PatientProfile = require("./PatientProfile");
 
 const db = require("../db/index");
 
@@ -12,12 +13,20 @@ class User extends Model {
 
   static get relationMappings() {
     return {
-      profile: {
+      doctorProfile: {
         relation: Model.HasOneRelation,
         modelClass: DoctorProfile,
         join: {
           from: "users.id",
           to: "doctor_profiles.user_id",
+        },
+      },
+      patientProfile: {
+        relation: Model.HasOneRelation,
+        modelClass: PatientProfile,
+        join: {
+          from: "users.id",
+          to: "patient_profiles.user_id",
         },
       },
     };

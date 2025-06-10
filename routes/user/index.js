@@ -5,13 +5,14 @@ const validateRequest = require("../../middlewares/validateRequest");
 const {
   userValidationSchema,
   updateUserValidationSchema,
+  loginValidationSchema,
 } = require("./user.validations");
 
 router.post(
-  "/user/create",
+  "/auth/signup",
   validateRequest(userValidationSchema),
   /*
-  #swagger.tags = ["User"]
+  #swagger.tags = ["Auth"]
   #swagger.description = "Payload is required"
   #swagger.requestBody = {
     required: true,
@@ -23,6 +24,41 @@ router.post(
   }
   */
   userController.createUser
+);
+
+router.post(
+  "/auth/login",
+  validateRequest(loginValidationSchema),
+  /*
+  #swagger.tags = ["Auth"],
+  #swagger.description = "Route for login user"
+  #swagger.requestBody = {
+    required: true,
+    content: {
+      "application/json": {
+        schema: { $ref: "#/definitions/Login" }
+      }
+    }
+  }
+  */
+  userController.loginUser
+);
+
+router.post(
+  "/refresh-token",
+  /*
+  #swagger.tags = ["Auth"]
+  #swagger.description = "API route for refreshing the expired access token"
+  #swagger.requestBody = {
+    required: true,
+    content: {
+      "application/json": {
+        schema: { $ref: "#/definitions/RefreshToken" }
+      }
+    }
+  }
+  */
+  userController.getNewAccessToken
 );
 
 router.get(

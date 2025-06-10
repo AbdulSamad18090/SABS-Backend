@@ -25,6 +25,45 @@ const createUser = async (req, res) => {
   }
 };
 
+const loginUser = async (req, res) => {
+  try {
+    const userData = await userService.loginUser(req.body);
+
+    return res.status(200).json({
+      success: true,
+      message: "Login successful",
+      data: userData, // safer than spreading sensitive fields
+    });
+  } catch (error) {
+    return res.status(400).json({
+      // 400 for bad credentials, not 500
+      success: false,
+      message: "Failed to login",
+      error: error.message,
+    });
+  }
+};
+
+const getNewAccessToken = async (req, res) => {
+  try {
+    const { refreshToken } = req.body;
+
+    const result = await userService.getNewAccessToken(refreshToken);
+
+    return res.status(200).json({
+      success: true,
+      message: "New access token generated",
+      ...result,
+    });
+  } catch (error) {
+    return res.status(401).json({
+      success: false,
+      message: "Failed to refresh access token",
+      error: error.message,
+    });
+  }
+};
+
 const getDoctors = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
@@ -95,6 +134,8 @@ const deleteUser = async (req, res) => {
 
 module.exports = {
   createUser,
+  loginUser,
+  getNewAccessToken,
   getDoctors,
   updateUser,
   deleteUser,

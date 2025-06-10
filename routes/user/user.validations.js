@@ -12,4 +12,13 @@ const updateUserValidationSchema = Joi.object({
   password: Joi.string().min(6).max(12),
 });
 
-module.exports = { userValidationSchema, updateUserValidationSchema };
+const loginValidationSchema = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().min(6).max(12).required(),
+});
+
+module.exports = {
+  userValidationSchema,
+  updateUserValidationSchema,
+  loginValidationSchema,
+};

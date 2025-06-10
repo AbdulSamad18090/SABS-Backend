@@ -12,8 +12,15 @@ const doc = {
     User: {
       full_name: "User Full name.",
       email: "User Email",
-      password: "hashed password",
+      password: "password",
       role: "doctor / patient",
+    },
+    Login: {
+      email: "Your email",
+      password: "Your password",
+    },
+    RefreshToken: {
+      refreshToken: "valid refresh token",
     },
   },
 };
