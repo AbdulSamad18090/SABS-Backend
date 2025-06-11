@@ -1,27 +1,30 @@
 const userService = require("./user.services");
 
-const createUser = async (req, res) => {
+const createUser = async (body) => {
   try {
-    const user = await userService.createUser(req.body);
-    return res.status(201).json({
+    const user = await userService.createUser(body);
+    return {
       success: true,
+      statusCode: 200,
       message: "User registered successfully",
       user,
-    });
+    };
   } catch (error) {
     // Check if error is from duplicate or invalid input
     if (error.message === "User with this email already exists") {
-      return res.status(400).json({
+      return {
         success: false,
+        statusCode: 400,
         message: "User already exists with the provided email",
-      });
+      };
     }
 
-    return res.status(500).json({
+    return {
       success: false,
+      statusCode: 500,
       message: "User creation failed",
       error: error.message,
-    });
+    };
   }
 };
 
@@ -30,14 +33,14 @@ const loginUser = async (body) => {
     const userData = await userService.loginUser(body);
     return {
       success: true,
-      errorCode: 200,
+      statusCode: 200,
       message: "Login successful",
       data: userData,
     };
   } catch (error) {
     return {
       success: false,
-      errorCode: 400,
+      statusCode: 400,
       message: "Failed to login",
       error: error.message,
     };

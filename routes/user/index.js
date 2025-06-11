@@ -23,7 +23,10 @@ router.post(
     }
   }
   */
-  userController.createUser
+  async (req, res) => {
+    const result = await userController.createUser(req.body);
+    return res.status(result.statusCode).json(result);
+  }
 );
 
 router.post(
@@ -43,7 +46,7 @@ router.post(
   */
   async (req, res) => {
     const result = await userController.loginUser(req.body);
-    return res.status(result.errorCode).json(result);
+    return res.status(result.statusCode).json(result);
   }
 );
 
