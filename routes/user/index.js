@@ -7,6 +7,7 @@ const {
   updateUserValidationSchema,
   loginValidationSchema,
 } = require("./user.validations");
+const verifyToken = require("../../middlewares/verifyToken");
 
 router.post(
   "/auth/signup",
@@ -69,6 +70,7 @@ router.post(
 
 router.get(
   "/user/doctor/get",
+  verifyToken,
   /*
   #swagger.tags = ["User"]
   #swagger.description = "API route to fetch doctors with pagination"

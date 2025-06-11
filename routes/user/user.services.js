@@ -73,7 +73,7 @@ const loginUser = async (userData) => {
   const accessToken = jwt.sign(
     { id: existingUser.id, role: existingUser.role },
     ACCESS_TOKEN_SECRET,
-    { expiresIn: "15m" }
+    { expiresIn: "1h" }
   );
 
   const refreshToken = jwt.sign({ id: existingUser.id }, REFRESH_TOKEN_SECRET, {
@@ -124,7 +124,7 @@ const getNewAccessToken = async (refreshToken) => {
     const newAccessToken = jwt.sign(
       { id: user.id, role: user.role },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "15m" }
+      { expiresIn: "1h" }
     );
 
     // Optionally update access token in DB
@@ -144,11 +144,35 @@ const getDoctors = async (page = 1, limit = 50) => {
   const result = await User.query()
     .select("id", "full_name", "email")
     .where("role", "doctor")
-    .withGraphFetched("doctorProfile")
+    .withGraphFetched("[doctorProfile, ratingsreviews(selectReviewStats)]")
+    .modifiers({
+      selectReviewStats(builder) {
+        builder
+          .select("doctor_id")
+          .count("id as totalReviews")
+          .avg("rating as averageRating")
+          .groupBy("doctor_id");
+      },
+    })
     .page(page - 1, limit);
 
+  // Flatten the stats
+  const doctors = result.results.map((doctor) => {
+    const stats = doctor.ratingsreviews?.[0] || {
+      totalReviews: 0,
+      averageRating: null,
+    };
+    return {
+      ...doctor,
+      totalReviews: Number(stats.totalReviews || 0),
+      averageRating: stats.averageRating
+        ? Number(stats.averageRating).toFixed(1)
+        : null,
+    };
+  });
+
   return {
-    doctors: result.results,
+    doctors,
     total: result.total,
     page,
     totalPages: Math.ceil(result.total / limit),

@@ -8,6 +8,15 @@ const doc = {
   host: "localhost:3000",
   basePath: "/",
   schemes: ["http"],
+  securityDefinitions: {
+    bearerAuth: {
+      type: "apiKey",
+      name: "Authorization",
+      in: "header",
+      description: "Enter your token as: Bearer <token>",
+    },
+  },
+  security: [{ bearerAuth: [] }],
   definitions: {
     User: {
       full_name: "User Full name.",
