@@ -7,7 +7,7 @@ const userValidationSchema = Joi.object({
   role: Joi.string().required(),
 });
 
-const updateUserValidationSchema = Joi.object({
+const updateDoctorValidationSchema = Joi.object({
   id: Joi.string().required(),
   full_name: Joi.string().min(3).max(100).required(),
   profile_image: Joi.string(),
@@ -21,6 +21,18 @@ const updateUserValidationSchema = Joi.object({
   medical_license: Joi.string(),
 });
 
+const updatePatientValidationSchema = Joi.object({
+  id: Joi.string().required(),
+  address: Joi.string().optional().allow(null, ""),
+  age: Joi.number().optional().allow(null),
+  blood_group: Joi.string().optional().allow(null, ""),
+  emergency_contact: Joi.number().optional().allow(null),
+  full_name: Joi.string().optional().allow(null, ""),
+  phone_number: Joi.number().optional().allow(null),
+  problem: Joi.string().optional().allow(null, ""),
+  profile_image: Joi.string().optional().allow(null, ""),
+});
+
 const loginValidationSchema = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string().min(6).max(12).required(),
@@ -28,6 +40,7 @@ const loginValidationSchema = Joi.object({
 
 module.exports = {
   userValidationSchema,
-  updateUserValidationSchema,
+  updateDoctorValidationSchema,
+  updatePatientValidationSchema,
   loginValidationSchema,
 };

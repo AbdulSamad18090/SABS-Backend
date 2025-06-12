@@ -4,8 +4,9 @@ const userController = require("./user.controller");
 const validateRequest = require("../../middlewares/validateRequest");
 const {
   userValidationSchema,
-  updateUserValidationSchema,
   loginValidationSchema,
+  updateDoctorValidationSchema,
+  updatePatientValidationSchema,
 } = require("./user.validations");
 const verifyToken = require("../../middlewares/verifyToken");
 
@@ -97,22 +98,44 @@ router.get(
 
 router.put(
   "/user/doctor/update",
-  validateRequest(updateUserValidationSchema),
+  validateRequest(updateDoctorValidationSchema),
   verifyToken,
   /*
     #swagger.tags = ["User"]
-    #swagger.description = "API route for updating a user."
+    #swagger.description = "API route for updating a doctor."
     #swagger.requestBody = {
       required: true,
       content: {
         "application/json": {
-          schema: { $ref: "#/definitions/UpdateUser" }
+          schema: { $ref: "#/definitions/UpdateDoctor" }
         }
       }
     }
   */
   async (req, res) => {
-    const result = await userController.updateUser(req.body);
+    const result = await userController.updateDoctor(req.body);
+    return res.status(result.statusCode).json(result);
+  }
+);
+
+router.put(
+  "/user/patient/update",
+  validateRequest(updatePatientValidationSchema),
+  verifyToken,
+  /*
+    #swagger.tags = ["User"]
+    #swagger.description = "API route for updating a patient."
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: { $ref: "#/definitions/UpdatePatient" }
+        }
+      }
+    }
+  */
+  async (req, res) => {
+    const result = await userController.updatePatient(req.body);
     return res.status(result.statusCode).json(result);
   }
 );

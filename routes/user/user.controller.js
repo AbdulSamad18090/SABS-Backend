@@ -90,9 +90,37 @@ const getDoctors = async (req) => {
   }
 };
 
-const updateUser = async (userData) => {
+const updateDoctor = async (userData) => {
   try {
-    const updatedUser = await userService.updateUser(userData);
+    const updatedUser = await userService.updateDoctor(userData);
+
+    if (!updatedUser) {
+      return {
+        success: false,
+        statusCode: 404,
+        message: "User not found",
+      };
+    }
+
+    return {
+      success: true,
+      statusCode: 200,
+      message: "Profile updated successfully",
+      user: updatedUser,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      statusCode: 500,
+      message: "Failed to update profile",
+      error: error.message,
+    };
+  }
+};
+
+const updatePatient = async (userData) => {
+  try {
+    const updatedUser = await userService.updatePatient(userData);
 
     if (!updatedUser) {
       return {
@@ -141,6 +169,7 @@ module.exports = {
   loginUser,
   getNewAccessToken,
   getDoctors,
-  updateUser,
+  updateDoctor,
+  updatePatient,
   deleteUser,
 };

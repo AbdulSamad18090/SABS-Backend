@@ -143,7 +143,7 @@
         "tags": [
           "User"
         ],
-        "description": "API route for updating a user.",
+        "description": "API route for updating a doctor.",
         "parameters": [
           {
             "name": "authorization",
@@ -169,7 +169,45 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateUser"
+                "$ref": "#/components/schemas/UpdateDoctor"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/patient/update": {
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "description": "API route for updating a patient.",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePatient"
               }
             }
           }
@@ -227,7 +265,7 @@
           }
         }
       },
-      "UpdateUser": {
+      "UpdateDoctor": {
         "type": "object",
         "properties": {
           "id": {
@@ -273,6 +311,47 @@
           "medical_license": {
             "type": "string",
             "example": "MD123456789"
+          }
+        }
+      },
+      "UpdatePatient": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "c9533c6a-51bf-48ba-a0b5-dc56b448278b"
+          },
+          "address": {
+            "type": "string",
+            "example": "House D-237, Block D, Street 54, PAEC ECHS, Rawat, Islamabad"
+          },
+          "age": {
+            "type": "number",
+            "example": 18
+          },
+          "blood_group": {
+            "type": "string",
+            "example": "A+"
+          },
+          "emergency_contact": {
+            "type": "string",
+            "example": "03345455964"
+          },
+          "full_name": {
+            "type": "string",
+            "example": "Ahmad Ali"
+          },
+          "phone_number": {
+            "type": "string",
+            "example": "03345455964"
+          },
+          "problem": {
+            "type": "string",
+            "example": "I have a Cancer"
+          },
+          "profile_image": {
+            "type": "string",
+            "example": "URL of image"
           }
         }
       },

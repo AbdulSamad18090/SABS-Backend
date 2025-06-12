@@ -24,7 +24,7 @@ const doc = {
       password: "password",
       role: "doctor / patient",
     },
-    UpdateUser: {
+    UpdateDoctor: {
       id: "6bddd1a6-81c4-4002-92ca-9e435859e5e5",
       full_name: "Abdul Samad",
       profile_image: "URL of image",
@@ -36,6 +36,17 @@ const doc = {
       experience: 12,
       address: "House D-237, Block D, Street 54, PAEC ECHS, Rawat, Islamabad",
       medical_license: "MD123456789",
+    },
+    UpdatePatient: {
+      id: "c9533c6a-51bf-48ba-a0b5-dc56b448278b",
+      address: "House D-237, Block D, Street 54, PAEC ECHS, Rawat, Islamabad",
+      age: 18,
+      blood_group: "A+",
+      emergency_contact: "03345455964",
+      full_name: "Ahmad Ali",
+      phone_number: "03345455964",
+      problem: "I have a Cancer",
+      profile_image: "URL of image",
     },
     Login: {
       email: "Your email",

@@ -179,7 +179,7 @@ const getDoctors = async (page = 1, limit = 50) => {
   };
 };
 
-const updateUser = async (userData) => {
+const updateDoctor = async (userData) => {
   const {
     id,
     full_name,
@@ -231,6 +231,49 @@ const updateUser = async (userData) => {
   return updatedUserWithProfile;
 };
 
+const updatePatient = async (userData) => {
+  const {
+    id,
+    full_name,
+    profile_image,
+    address,
+    blood_group,
+    age,
+    phone_number,
+    emergency_contact,
+    problem,
+  } = userData;
+
+  await User.query().patchAndFetchById(id, {
+    full_name,
+  });
+
+  await User.relatedQuery("patientProfile").for(id).patch({
+    profile_image,
+    address,
+    blood_group,
+    age,
+    phone_number,
+    emergency_contact,
+    problem,
+  });
+
+  const updatedUserWithProfile = await User.query()
+    .findById(id)
+    .withGraphFetched("patientProfile")
+    .select(
+      "id",
+      "full_name",
+      "email",
+      "role",
+      "revoked",
+      "created_at",
+      "updated_at"
+    );
+
+  return updatedUserWithProfile;
+};
+
 const deleteUser = async (userId) => {
   const user = await User.query().findById(userId);
   if (!user) {
@@ -246,6 +289,7 @@ module.exports = {
   loginUser,
   getNewAccessToken,
   getDoctors,
-  updateUser,
+  updateDoctor,
+  updatePatient,
   deleteUser,
 };
