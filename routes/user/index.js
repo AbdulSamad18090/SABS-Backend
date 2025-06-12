@@ -89,31 +89,32 @@ router.get(
     default: 50
   }
   */
-  userController.getDoctors
+  async (req, res) => {
+    const result = await userController.getDoctors(req);
+    return res.status(result.statusCode).json(result);
+  }
 );
 
 router.put(
-  "/user/update/:id",
+  "/user/doctor/update",
   validateRequest(updateUserValidationSchema),
+  verifyToken,
   /*
     #swagger.tags = ["User"]
     #swagger.description = "API route for updating a user."
-    #swagger.parameters['id'] = {
-      in: 'path',
-      description: 'ID of the user to update',
-      required: true,
-      type: 'string'
-    }
     #swagger.requestBody = {
       required: true,
       content: {
         "application/json": {
-          schema: { $ref: "#/definitions/User" }
+          schema: { $ref: "#/definitions/UpdateUser" }
         }
       }
     }
   */
-  userController.updateUser
+  async (req, res) => {
+    const result = await userController.updateUser(req.body);
+    return res.status(result.statusCode).json(result);
+  }
 );
 
 router.delete(

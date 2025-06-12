@@ -180,17 +180,55 @@ const getDoctors = async (page = 1, limit = 50) => {
 };
 
 const updateUser = async (userData) => {
-  const updatedUser = await User.query().patchAndFetchById(
-    userData.id,
-    userData
-  );
+  const {
+    id,
+    full_name,
+    profile_image,
+    email,
+    phone_number,
+    bio,
+    specialization,
+    university,
+    graduation_year,
+    experience,
+    address,
+    medical_license,
+  } = userData;
 
-  // Exclude the password
-  if (updatedUser) {
-    delete updatedUser.password;
-  }
+  // Step 1: Update user
+  await User.query().patchAndFetchById(id, {
+    full_name,
+    email,
+  });
 
-  return updatedUser;
+  // Step 2: Update doctor profile
+  await User.relatedQuery("doctorProfile").for(id).patch({
+    profile_image,
+    phone_number,
+    bio,
+    specialization,
+    university,
+    graduation_year,
+    experience,
+    address,
+    medical_license,
+  });
+
+  // Step 3: Fetch updated user with doctor profile
+  const updatedUserWithProfile = await User.query()
+    .findById(id)
+    .withGraphFetched("doctorProfile")
+    .select(
+      "id",
+      "full_name",
+      "email",
+      "role",
+      "revoked",
+      "created_at",
+      "updated_at"
+    );
+
+  return updatedUserWithProfile;
 };
 
 const deleteUser = async (userId) => {

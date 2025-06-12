@@ -8,8 +8,17 @@ const userValidationSchema = Joi.object({
 });
 
 const updateUserValidationSchema = Joi.object({
-  full_name: Joi.string().min(3).max(100),
-  password: Joi.string().min(6).max(12),
+  id: Joi.string().required(),
+  full_name: Joi.string().min(3).max(100).required(),
+  profile_image: Joi.string(),
+  phone_number: Joi.string(),
+  bio: Joi.string(),
+  specialization: Joi.string(),
+  university: Joi.string(),
+  graduation_year: Joi.number(),
+  experience: Joi.number(),
+  address: Joi.string(),
+  medical_license: Joi.string(),
 });
 
 const loginValidationSchema = Joi.object({

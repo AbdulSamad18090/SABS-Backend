@@ -129,22 +129,16 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created"
-          },
           "401": {
             "description": "Unauthorized"
           },
           "403": {
             "description": "Forbidden"
-          },
-          "500": {
-            "description": "Internal Server Error"
           }
         }
       }
     },
-    "/api/user/update/{id}": {
+    "/api/user/doctor/update": {
       "put": {
         "tags": [
           "User"
@@ -152,27 +146,22 @@
         "description": "API route for updating a user.",
         "parameters": [
           {
-            "name": "id",
-            "in": "path",
-            "required": true,
+            "name": "authorization",
+            "in": "header",
             "schema": {
               "type": "string"
-            },
-            "description": "ID of the user to update"
+            }
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
           "400": {
             "description": "Bad Request"
           },
-          "404": {
-            "description": "Not Found"
+          "401": {
+            "description": "Unauthorized"
           },
-          "500": {
-            "description": "Internal Server Error"
+          "403": {
+            "description": "Forbidden"
           }
         },
         "requestBody": {
@@ -180,7 +169,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/User"
+                "$ref": "#/components/schemas/UpdateUser"
               }
             }
           }
@@ -235,6 +224,55 @@
           "role": {
             "type": "string",
             "example": "doctor / patient"
+          }
+        }
+      },
+      "UpdateUser": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "6bddd1a6-81c4-4002-92ca-9e435859e5e5"
+          },
+          "full_name": {
+            "type": "string",
+            "example": "Abdul Samad"
+          },
+          "profile_image": {
+            "type": "string",
+            "example": "URL of image"
+          },
+          "phone_number": {
+            "type": "string",
+            "example": "03345455964"
+          },
+          "bio": {
+            "type": "string",
+            "example": "This is my Bio."
+          },
+          "specialization": {
+            "type": "string",
+            "example": "Dermatology"
+          },
+          "university": {
+            "type": "string",
+            "example": "Harvard Medical School"
+          },
+          "graduation_year": {
+            "type": "number",
+            "example": 2013
+          },
+          "experience": {
+            "type": "number",
+            "example": 12
+          },
+          "address": {
+            "type": "string",
+            "example": "House D-237, Block D, Street 54, PAEC ECHS, Rawat, Islamabad"
+          },
+          "medical_license": {
+            "type": "string",
+            "example": "MD123456789"
           }
         }
       },

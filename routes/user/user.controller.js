@@ -67,53 +67,54 @@ const getNewAccessToken = async (req, res) => {
   }
 };
 
-const getDoctors = async (req, res) => {
+const getDoctors = async (req) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 50;
 
     const result = await userService.getDoctors(page, limit);
 
-    return res.status(201).json({
+    return {
       success: true,
+      statusCode: 200,
       message: "Doctors fetched successfully",
       ...result,
-    });
+    };
   } catch (error) {
-    return res.status(500).json({
+    return {
       success: false,
+      statusCode: 500,
       message: "Failed to fetch doctors",
       error: error.message,
-    });
+    };
   }
 };
 
-const updateUser = async (req, res) => {
+const updateUser = async (userData) => {
   try {
-    const { id } = req.params;
-    const userData = req.body;
-    userData.id = id;
-
     const updatedUser = await userService.updateUser(userData);
 
     if (!updatedUser) {
-      return res.status(404).json({
+      return {
         success: false,
+        statusCode: 404,
         message: "User not found",
-      });
+      };
     }
 
-    res.status(200).json({
+    return {
       success: true,
-      message: "User updated successfully",
+      statusCode: 200,
+      message: "Profile updated successfully",
       user: updatedUser,
-    });
+    };
   } catch (error) {
-    res.status(500).json({
+    return {
       success: false,
-      message: "Failed to update user",
+      statusCode: 500,
+      message: "Failed to update profile",
       error: error.message,
-    });
+    };
   }
 };
 
