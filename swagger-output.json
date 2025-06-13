@@ -240,6 +240,78 @@
           }
         }
       }
+    },
+    "/api/review/create": {
+      "post": {
+        "tags": [
+          "Rating & Review"
+        ],
+        "description": "api route for publishing new review",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Review"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/review/get/{id}": {
+      "get": {
+        "tags": [
+          "Rating & Review"
+        ],
+        "description": "API route for fetching reviews of specific doctor",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID of the doctor"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -374,6 +446,27 @@
           "refreshToken": {
             "type": "string",
             "example": "valid refresh token"
+          }
+        }
+      },
+      "Review": {
+        "type": "object",
+        "properties": {
+          "doctor_id": {
+            "type": "string",
+            "example": "id of doctor"
+          },
+          "patient_id": {
+            "type": "string",
+            "example": "id of patient"
+          },
+          "rating": {
+            "type": "number",
+            "example": 4
+          },
+          "review": {
+            "type": "string",
+            "example": "patient thoughts about doctor"
           }
         }
       }

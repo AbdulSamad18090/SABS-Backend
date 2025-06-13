@@ -55,6 +55,12 @@ const doc = {
     RefreshToken: {
       refreshToken: "valid refresh token",
     },
+    Review: {
+      doctor_id: "id of doctor",
+      patient_id: "id of patient",
+      rating: 4,
+      review: "patient thoughts about doctor",
+    },
   },
 };
 
