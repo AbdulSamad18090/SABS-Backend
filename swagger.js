@@ -61,6 +61,21 @@ const doc = {
       rating: 4,
       review: "patient thoughts about doctor",
     },
+    BookAppointment: {
+      patient_id: "id of patient",
+      doctor_id: "id of doctor",
+      appointment_at: "2025-06-16 10:30:00",
+      reason: "Reason of booking appointment",
+    },
+    SaveSlot: [
+      {
+        doctor_id: "6bddd1a6-81c4-4002-92ca-9e435859e5e5",
+        title: "Available Slot",
+        start_time: "01:00:00.000",
+        end_time: "01:30:00.000",
+        slot_date: "2025-06-17",
+      },
+    ],
   },
 };
 

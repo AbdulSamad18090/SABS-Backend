@@ -312,6 +312,116 @@
           }
         }
       }
+    },
+    "/api/appointment/book": {
+      "post": {
+        "tags": [
+          "Appointment"
+        ],
+        "description": "API route to book an appointment",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookAppointment"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/slots/save": {
+      "post": {
+        "tags": [
+          "Slots"
+        ],
+        "description": "API route for saving slots",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaveSlot"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/slots/get-schedule/{id}": {
+      "get": {
+        "tags": [
+          "Slots"
+        ],
+        "description": "API route for fetch slots / schedule",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID of the doctor you want to fetch schedule or availabale slots"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -467,6 +577,55 @@
           "review": {
             "type": "string",
             "example": "patient thoughts about doctor"
+          }
+        }
+      },
+      "BookAppointment": {
+        "type": "object",
+        "properties": {
+          "patient_id": {
+            "type": "string",
+            "example": "id of patient"
+          },
+          "doctor_id": {
+            "type": "string",
+            "example": "id of doctor"
+          },
+          "appointment_at": {
+            "type": "string",
+            "example": "2025-06-16 10:30:00"
+          },
+          "reason": {
+            "type": "string",
+            "example": "Reason of booking appointment"
+          }
+        }
+      },
+      "SaveSlot": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "doctor_id": {
+              "type": "string",
+              "example": "6bddd1a6-81c4-4002-92ca-9e435859e5e5"
+            },
+            "title": {
+              "type": "string",
+              "example": "Available Slot"
+            },
+            "start_time": {
+              "type": "string",
+              "example": "01:00:00.000"
+            },
+            "end_time": {
+              "type": "string",
+              "example": "01:30:00.000"
+            },
+            "slot_date": {
+              "type": "string",
+              "example": "2025-06-17"
+            }
           }
         }
       }

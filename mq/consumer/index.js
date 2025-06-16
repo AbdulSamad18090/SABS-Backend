@@ -1,26 +1,36 @@
-var amqp = require("amqplib/callback_api");
+// mq/consumer.js
+const { UniqueViolationError } = require('objection');
+const Appointment = require("../../models/Appointment");
+const { getChannel } = require("../connection");
 
-amqp.connect("amqp://localhost", function (connectionError, connection) {
-  if (connectionError) {
-    throw connectionError;
-  }
-  connection.createChannel(function (channelError, channel) {
-    if (channelError) {
-      throw channelError;
-    }
-    var queue = "TestQueue";
-    channel.assertQueue(queue, {
-      durable: false,
-    });
-    channel.consume(queue, function (msg) {
-      if (msg !== null) {
-        console.log(`Received message: ${msg.content.toString()}`);
-        // channel.ack(msg);
+const consumeAppointments = async () => {
+  const channel = getChannel();
+  if (!channel) throw new Error("Channel not ready");
+
+  channel.prefetch(1);
+
+  channel.consume("appointment-queue", async (msg) => {
+    if (!msg) return;
+
+    let data;
+
+    try {
+      data = JSON.parse(msg.content.toString());
+      const newAppointment = await Appointment.query().insert(data);
+      console.log("✅ Appointment saved:", newAppointment);
+      channel.ack(msg);
+    } catch (error) {
+      if (error instanceof UniqueViolationError) {
+        console.log("⚠️ Duplicate appointment time:", data?.appointment_at);
+        channel.ack(msg);
       } else {
-        console.log("No messages in queue");
+        console.error("❌ Unexpected DB error:", error);
+        channel.nack(msg, false, true);
       }
-    }, {
-      noAck: false
-    });
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, 1000));
   });
-});
+};
+
+module.exports = { consumeAppointments };
