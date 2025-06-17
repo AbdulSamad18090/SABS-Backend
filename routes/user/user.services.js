@@ -141,10 +141,17 @@ const getNewAccessToken = async (refreshToken) => {
 };
 
 const getDoctors = async (page = 1, limit = 50) => {
+  // Get today's date in local timezone (YYYY-MM-DD)
+  const today = new Date();
+  today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
+  const todayString = today.toISOString().split("T")[0];
+
   const result = await User.query()
     .select("id", "full_name", "email")
     .where("role", "doctor")
-    .withGraphFetched("[doctorProfile, ratingsreviews(selectReviewStats)]")
+    .withGraphFetched(
+      "[doctorProfile, ratingsreviews(selectReviewStats), slots(selectAvailableSlots)]"
+    )
     .modifiers({
       selectReviewStats(builder) {
         builder
@@ -156,18 +163,31 @@ const getDoctors = async (page = 1, limit = 50) => {
     })
     .page(page - 1, limit);
 
-  // Flatten the stats
   const doctors = result.results.map((doctor) => {
     const stats = doctor.ratingsreviews?.[0] || {
       totalReviews: 0,
       averageRating: null,
     };
+
+    // Adjust each slot_date to local date and compare to today
+    const todaySlots = doctor.slots?.filter((slot) => {
+      const date = new Date(slot.slot_date);
+      date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+      const slotDate = date.toISOString().split("T")[0];
+      return slotDate === todayString;
+    }) || [];
+
+    const isAvailableToday = todaySlots.length > 0;
+    const hasUpcomingSlots = doctor.slots?.length > 0;
+
     return {
       ...doctor,
       totalReviews: Number(stats.totalReviews || 0),
       averageRating: stats.averageRating
         ? Number(stats.averageRating).toFixed(1)
         : null,
+      isAvailableToday,
+      hasUpcomingSlots,
     };
   });
 

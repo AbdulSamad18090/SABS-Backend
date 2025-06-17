@@ -2,6 +2,7 @@ const { Model } = require("objection");
 const DoctorProfile = require("./DoctorProfile");
 const PatientProfile = require("./PatientProfile");
 const RatingsReviews = require("./RatingReview");
+const Slot = require("./Slot");
 
 const db = require("../db/index");
 
@@ -38,6 +39,14 @@ class User extends Model {
           to: "ratings_reviews.doctor_id",
         },
       },
+      slots: {
+        relation: Model.HasManyRelation,
+        modelClass: Slot,
+        join: {
+          from: "users.id",
+          to: "slots.doctor_id",
+        },
+      },
     };
   }
 
@@ -49,6 +58,19 @@ class User extends Model {
           .count("id as totalReviews")
           .avg("rating as averageRating")
           .groupBy("doctor_id");
+      },
+      selectAvailableSlots(builder) {
+        const today = new Date().toISOString().split("T")[0]; // "YYYY-MM-DD"
+        builder
+          .select(
+            "doctor_id",
+            "slot_date",
+            "start_time",
+            "end_time",
+            "is_booked"
+          )
+          .where("is_booked", false)
+          .where("slot_date", today);
       },
     };
   }

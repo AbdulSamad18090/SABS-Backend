@@ -8,7 +8,6 @@ const createSlot = async (slotsArray) => {
 
 const getSchedule = async (doctorId) => {
   const schedule = await Slot.query().where("doctor_id", doctorId);
-  console.log(schedule)
   return schedule;
 };
 
