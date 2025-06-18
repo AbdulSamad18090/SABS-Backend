@@ -15,6 +15,7 @@ class Slot extends Model {
         const today = new Date().toISOString().split("T")[0].toString(); // 'YYYY-MM-DD'
         builder
           .select(
+            "id",
             "doctor_id",
             "slot_date",
             "start_time",
