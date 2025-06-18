@@ -64,6 +64,7 @@ const doc = {
     BookAppointment: {
       patient_id: "id of patient",
       doctor_id: "id of doctor",
+      slot_id: "id of doctor",
       appointment_at: "2025-06-16 10:30:00",
       reason: "Reason of booking appointment",
     },
