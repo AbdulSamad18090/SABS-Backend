@@ -45,6 +45,35 @@ const bookAppointment = async (data) => {
   }
 };
 
+const getDoctorAppointments = async (doctorId) => {
+  try {
+    const appointments = await appointmentService.getDoctorAppointments(
+      doctorId
+    );
+    if (!appointments) {
+      return {
+        success: false,
+        statusCode: 400,
+        message: "No appointments found",
+      };
+    }
+    return {
+      success: true,
+      statusCode: 200,
+      message: "Appointments fetched successfully",
+      appointments,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      statusCode: 500,
+      message: "Failed to fetch appointments",
+      error: error.message,
+    };
+  }
+};
+
 module.exports = {
   bookAppointment,
+  getDoctorAppointments,
 };

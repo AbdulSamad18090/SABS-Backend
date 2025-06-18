@@ -351,6 +351,40 @@
         }
       }
     },
+    "/api/appointment/doctor/{id}": {
+      "get": {
+        "tags": [
+          "Appointment"
+        ],
+        "description": "API toute for fetching appointments of perticulat doctor",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID of the doctor you want to fetch the appointments"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
     "/api/slots/save": {
       "post": {
         "tags": [

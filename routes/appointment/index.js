@@ -29,4 +29,24 @@ router.post(
   }
 );
 
+router.get(
+  "/appointment/doctor/:id",
+  verifyToken,
+  /*
+  #swagger.tags = ["Appointment"]
+  #swagger.description = "API toute for fetching appointments of perticulat doctor"
+   #swagger.parameters['id'] = {
+      in: 'path',
+      description: 'ID of the doctor you want to fetch the appointments',
+      required: true,
+      type: 'string'
+    }
+  */
+  async (req, res) => {
+    const { id } = req.params;
+    const result = await appointmentController.getDoctorAppointments(id);
+    return res.status(result.statusCode).json(result);
+  }
+);
+
 module.exports = router;
