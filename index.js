@@ -46,11 +46,23 @@ app.get("/", (req, res) => {
 });
 
 // Socket.IO
+// Server-side (Node.js + Socket.IO)
 io.on("connection", (socket) => {
-  console.log("🔌 New client connected:", socket.id);
+  console.log("Client connected:", socket.id);
+
+  // Handle ping from client
+  socket.on("ping", () => {
+    socket.emit("pong");
+  });
+
+  // Send periodic ping from server
+  const pingInterval = setInterval(() => {
+    socket.emit("ping");
+  }, 25000);
 
   socket.on("disconnect", () => {
-    console.log("❌ Client disconnected:", socket.id);
+    clearInterval(pingInterval);
+    console.log("Client disconnected:", socket.id);
   });
 });
 
