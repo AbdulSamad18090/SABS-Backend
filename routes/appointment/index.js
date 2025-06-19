@@ -49,4 +49,24 @@ router.get(
   }
 );
 
+router.put(
+  "/appointment/cancel/:id",
+  verifyToken,
+  /*
+  #swagger.tags = ["Appointment"]
+  #swagger.description = "API route to cancel an appointment"
+   #swagger.parameters['id'] = {
+      in: 'path',
+      description: 'ID of the appointment you want to cancel',
+      required: true,
+      type: 'string'
+    }
+  */
+  async (req, res) => {
+    const { id } = req.params;
+    const result = await appointmentController.cancelAppointment(id);
+    return res.status(result.statusCode).json(result);
+  }
+);
+
 module.exports = router;

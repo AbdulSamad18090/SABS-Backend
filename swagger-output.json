@@ -385,6 +385,40 @@
         }
       }
     },
+    "/api/appointment/cancel/{id}": {
+      "put": {
+        "tags": [
+          "Appointment"
+        ],
+        "description": "API route to cancel an appointment",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID of the appointment you want to cancel"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
     "/api/slots/save": {
       "post": {
         "tags": [

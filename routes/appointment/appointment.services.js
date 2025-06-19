@@ -34,7 +34,21 @@ const getDoctorAppointments = async (doctorId) => {
   };
 };
 
+const cancelAppointment = async (appointmentId) => {
+  const appointment = await Appointment.query().patchAndFetchById(
+    appointmentId,
+    {
+      status: "cancelled",
+    }
+  );
+  if (!appointment) {
+    throw new Error("Appointment not found");
+  }
+  return appointment;
+};
+
 module.exports = {
   bookAppointment,
   getDoctorAppointments,
+  cancelAppointment,
 };

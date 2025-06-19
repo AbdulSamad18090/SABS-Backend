@@ -73,7 +73,29 @@ const getDoctorAppointments = async (doctorId) => {
   }
 };
 
+const cancelAppointment = async (appointmentId) => {
+  try {
+    const appointment = await appointmentService.cancelAppointment(
+      appointmentId
+    );
+    return {
+      success: true,
+      statusCode: 200,
+      message: "Appointment cancelled successfully",
+      appointment,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      statusCode: 500,
+      message: "Failed to cancel appointment",
+      error: error.message,
+    };
+  }
+};
+
 module.exports = {
   bookAppointment,
   getDoctorAppointments,
+  cancelAppointment,
 };
