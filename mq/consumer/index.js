@@ -5,7 +5,7 @@ const User = require("../../models/User");
 const { getChannel } = require("../connection");
 const { sendAppointmentEmail } = require("../../utils/sendEmail");
 
-const consumeAppointments = async () => {
+const consumeAppointments = async (io) => {
   const channel = getChannel();
   if (!channel) throw new Error("Channel not ready");
 
@@ -31,6 +31,13 @@ const consumeAppointments = async () => {
       });
 
       await Slot.query().patchAndFetchById(slot_id, { is_booked: true });
+
+      const appointmentToBroadcast = await Appointment.query()
+        .findById(newAppointment.id)
+        .withGraphFetched("patient.[patientProfile]");
+
+      console.log("📡 Emitting new appointment:", appointmentToBroadcast);
+      io.emit("new_appointment", appointmentToBroadcast); // broadcast to all connected clients
 
       const patient = await User.query().findById(patient_id);
       const doctor = await User.query().findById(doctor_id);
