@@ -69,4 +69,24 @@ router.put(
   }
 );
 
+router.put(
+  "/appointment/complete/:id",
+  verifyToken,
+  /*
+  #swagger.tags = ["Appointment"]
+  #swagger.description = "API route to complete an appointment"
+   #swagger.parameters['id'] = {
+      in: 'path',
+      description: 'ID of the appointment you want to complete',
+      required: true,
+      type: 'string'
+    }
+  */
+  async (req, res) => {
+    const { id } = req.params;
+    const result = await appointmentController.completeAppointment(id);
+    return res.status(result.statusCode).json(result);
+  }
+);
+
 module.exports = router;

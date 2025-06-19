@@ -47,8 +47,22 @@ const cancelAppointment = async (appointmentId) => {
   return appointment;
 };
 
+const completeAppointment = async (appointmentId) => {
+  const appointment = await Appointment.query().patchAndFetchById(
+    appointmentId,
+    {
+      status: "completed",
+    }
+  );
+  if (!appointment) {
+    throw new Error("Appointment not found");
+  }
+  return appointment;
+};
+
 module.exports = {
   bookAppointment,
   getDoctorAppointments,
   cancelAppointment,
+  completeAppointment,
 };

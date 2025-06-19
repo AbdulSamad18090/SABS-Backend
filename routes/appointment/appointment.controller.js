@@ -94,8 +94,30 @@ const cancelAppointment = async (appointmentId) => {
   }
 };
 
+const completeAppointment = async (appointmentId) => {
+  try {
+    const appointment = await appointmentService.completeAppointment(
+      appointmentId
+    );
+    return {
+      success: true,
+      statusCode: 200,
+      message: "Appointment completed successfully",
+      appointment,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      statusCode: 500,
+      message: "Failed to complete appointment",
+      error: error.message,
+    };
+  }
+};
+
 module.exports = {
   bookAppointment,
   getDoctorAppointments,
   cancelAppointment,
+  completeAppointment,
 };
