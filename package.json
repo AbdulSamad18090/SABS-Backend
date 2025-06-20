@@ -6,7 +6,7 @@
     "swagger": "node swagger.js",
     "dev": "npm run swagger && nodemon index.js",
     "start": "npm run swagger && node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -30,6 +30,9 @@
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "jest": "^30.0.2",
+    "jest-extended": "^6.0.0",
+    "nodemon": "^3.1.10",
+    "supertest": "^7.1.1"
   }
 }
