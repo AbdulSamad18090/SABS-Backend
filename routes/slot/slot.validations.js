@@ -6,9 +6,12 @@ const saveSlotsValidationSchema = Joi.object({
   start_time: Joi.string().required(),
   slot_date: Joi.date().required(),
   title: Joi.string().required(),
+  is_booked: Joi.boolean().required(),
 });
 
-const saveSlotsArrayValidationSchema = Joi.array().items(saveSlotsValidationSchema);
+const saveSlotsArrayValidationSchema = Joi.array().items(
+  saveSlotsValidationSchema
+);
 
 module.exports = {
   saveSlotsArrayValidationSchema,
