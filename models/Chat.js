@@ -1,30 +1,30 @@
 const { Model } = require("objection");
-
 const db = require("../db/index");
-const User = require("./User");
 
 Model.knex(db);
 
-class Appointment extends Model {
+class Chat extends Model {
   static get tableName() {
-    return "appointments";
+    return "chats";
   }
 
   static get relationMappings() {
+    const User = require("./User");
+
     return {
-      patient: {
+      sender: {
         relation: Model.BelongsToOneRelation,
         modelClass: User,
         join: {
-          from: "appointments.patient_id",
+          from: "chats.sender_id",
           to: "users.id",
         },
       },
-      doctor: {
+      receiver: {
         relation: Model.BelongsToOneRelation,
         modelClass: User,
         join: {
-          from: "appointments.doctor_id",
+          from: "chats.receiver_id",
           to: "users.id",
         },
       },
@@ -32,4 +32,4 @@ class Appointment extends Model {
   }
 }
 
-module.exports = Appointment;
+module.exports = Chat;

@@ -73,6 +73,34 @@ const getDoctorAppointments = async (doctorId) => {
   }
 };
 
+const getPatientAppointments = async (patientId) => {
+  try {
+    const appointments = await appointmentService.getPatientAppointments(
+      patientId
+    );
+    if (!appointments) {
+      return {
+        success: false,
+        statusCode: 400,
+        message: "No appointments found",
+      };
+    }
+    return {
+      success: true,
+      statusCode: 200,
+      message: "Appointments fetched successfully",
+      appointments,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      statusCode: 500,
+      message: "Failed to fetch appointments",
+      error: error.message,
+    };
+  }
+};
+
 const cancelAppointment = async (appointmentId) => {
   try {
     const appointment = await appointmentService.cancelAppointment(
@@ -118,6 +146,7 @@ const completeAppointment = async (appointmentId) => {
 module.exports = {
   bookAppointment,
   getDoctorAppointments,
+  getPatientAppointments,
   cancelAppointment,
   completeAppointment,
 };

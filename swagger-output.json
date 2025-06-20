@@ -385,6 +385,40 @@
         }
       }
     },
+    "/api/appointment/patient/{id}": {
+      "get": {
+        "tags": [
+          "Appointment"
+        ],
+        "description": "API route for fetching appointments of a particular patient",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID of the patient you want to fetch the appointments"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
     "/api/appointment/cancel/{id}": {
       "put": {
         "tags": [

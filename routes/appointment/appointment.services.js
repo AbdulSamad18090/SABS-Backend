@@ -34,6 +34,34 @@ const getDoctorAppointments = async (doctorId) => {
   };
 };
 
+const getPatientAppointments = async (patientId) => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // 00:00 today
+
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1); // 00:00 tomorrow
+
+  // 📅 Today's appointments
+  const todayAppointments = await Appointment.query()
+    .where("patient_id", patientId)
+    .andWhere("appointment_at", ">=", today)
+    .andWhere("appointment_at", "<", tomorrow)
+    .withGraphFetched("doctor.[doctorProfile]")
+    .orderBy("appointment_at", "asc");
+
+  // 📆 Upcoming appointments
+  const upcomingAppointments = await Appointment.query()
+    .where("patient_id", patientId)
+    .andWhere("appointment_at", ">=", tomorrow)
+    .withGraphFetched("doctor.[doctorProfile]")
+    .orderBy("appointment_at", "asc");
+
+  return {
+    todayAppointments,
+    upcomingAppointments,
+  };
+};
+
 const cancelAppointment = async (appointmentId) => {
   const appointment = await Appointment.query().patchAndFetchById(
     appointmentId,
@@ -63,6 +91,7 @@ const completeAppointment = async (appointmentId) => {
 module.exports = {
   bookAppointment,
   getDoctorAppointments,
+  getPatientAppointments,
   cancelAppointment,
   completeAppointment,
 };

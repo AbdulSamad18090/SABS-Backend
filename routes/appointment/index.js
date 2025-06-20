@@ -49,6 +49,26 @@ router.get(
   }
 );
 
+router.get(
+  "/appointment/patient/:id",
+  verifyToken,
+  /*
+  #swagger.tags = ["Appointment"]
+  #swagger.description = "API route for fetching appointments of a particular patient"
+   #swagger.parameters['id'] = {
+      in: 'path',
+      description: 'ID of the patient you want to fetch the appointments',
+      required: true,
+      type: 'string'
+    }
+  */
+  async (req, res) => {
+    const { id } = req.params;
+    const result = await appointmentController.getPatientAppointments(id);
+    return res.status(result.statusCode).json(result);
+  }
+);
+
 router.put(
   "/appointment/cancel/:id",
   verifyToken,
