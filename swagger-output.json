@@ -558,6 +558,44 @@
           }
         }
       }
+    },
+    "/api/chat/send-message": {
+      "post": {
+        "tags": [
+          "Chat"
+        ],
+        "description": "Send a message in the chat",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChatMessage"
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -766,6 +804,23 @@
               "type": "string",
               "example": "2025-06-17"
             }
+          }
+        }
+      },
+      "ChatMessage": {
+        "type": "object",
+        "properties": {
+          "sender_id": {
+            "type": "string",
+            "example": "id of sender"
+          },
+          "receiver_id": {
+            "type": "string",
+            "example": "id of receiver"
+          },
+          "message": {
+            "type": "string",
+            "example": "message content"
           }
         }
       }

@@ -6,11 +6,13 @@ const userRouter = require("./routes/user/index");
 const reviewRouter = require("./routes/review/index");
 const appointmentRouter = require("./routes/appointment/index");
 const slotRouter = require("./routes/slot/index");
+const chatRouter = require("./routes/chat/index");
 const cors = require("cors");
 const { connectRabbitMQ } = require("./mq/connection");
 const { consumeAppointments } = require("./mq/consumer");
 const { Server } = require("socket.io");
 const http = require("http");
+const attachIO = require("./middlewares/attachIO");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -33,12 +35,14 @@ app.use(
     credentials: true, // if using cookies or auth headers
   })
 );
+// app.use(attachIO(io));
 
 // Routes
 app.use("/api", userRouter);
 app.use("/api", reviewRouter);
 app.use("/api", appointmentRouter);
 app.use("/api", slotRouter);
+app.use("/api", attachIO(io), chatRouter);
 // Serve Swagger UI
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 

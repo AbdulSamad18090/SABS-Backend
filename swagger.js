@@ -77,6 +77,11 @@ const doc = {
         slot_date: "2025-06-17",
       },
     ],
+    ChatMessage: {
+      sender_id: "id of sender",
+      receiver_id: "id of receiver",
+      message: "message content",
+    },
   },
 };
 
