@@ -596,6 +596,40 @@
           }
         }
       }
+    },
+    "/api/chat/fetch-messages/{id}": {
+      "get": {
+        "tags": [
+          "Chat"
+        ],
+        "description": "Fetch messages for a specific appointment",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID of the appointment to fetch messages for"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -817,6 +851,10 @@
           "receiver_id": {
             "type": "string",
             "example": "id of receiver"
+          },
+          "appointment_id": {
+            "type": "string",
+            "example": "id of appointment"
           },
           "message": {
             "type": "string",

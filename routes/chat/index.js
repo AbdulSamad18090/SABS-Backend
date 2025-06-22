@@ -27,4 +27,24 @@ router.post(
   }
 );
 
+router.get(
+  "/chat/fetch-messages/:id",
+  verifyToken,
+  /*
+  #swagger.tags = ['Chat']
+  #swagger.description = 'Fetch messages for a specific appointment'
+  #swagger.parameters['id'] = {
+      in: 'path',
+      description: 'ID of the appointment to fetch messages for',
+      required: true,
+      type: 'string'
+    }
+  */
+  async (req, res) => {
+    const { id } = req.params;
+    const result = await chatController.fetchAppointmentMessages(id);
+    return res.status(result.statusCode).json(result);
+  }
+);
+
 module.exports = router;

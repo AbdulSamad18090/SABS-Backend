@@ -10,10 +10,9 @@ const sendMessage = async (data, io) => {
         message: "Failed to send message",
       };
     }
+    // Emit the message to the receiver
     io.to(data.receiver_id).emit("new_message", message);
-    console.log(
-      `✅ Message emitted to user: ${data.receiver_id}, content: "${data.message}"`
-    );
+
     return {
       success: true,
       statusCode: 200,
@@ -30,6 +29,25 @@ const sendMessage = async (data, io) => {
   }
 };
 
+const fetchAppointmentMessages = async (appointmentId) => {
+  try {
+    const messages = await chatService.fetchAppointmentMessages(appointmentId);
+    return {
+      success: true,
+      statusCode: 200,
+      data: messages,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      statusCode: 500,
+      message: "Error fetching messages",
+      error: error.message,
+    };
+  }
+};
+
 module.exports = {
   sendMessage,
+  fetchAppointmentMessages,
 };

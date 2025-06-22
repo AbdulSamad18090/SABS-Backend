@@ -80,6 +80,7 @@ const doc = {
     ChatMessage: {
       sender_id: "id of sender",
       receiver_id: "id of receiver",
+      appointment_id: "id of appointment",
       message: "message content",
     },
   },

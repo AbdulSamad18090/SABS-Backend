@@ -55,6 +55,10 @@ app.get("/", (req, res) => {
 io.on("connection", (socket) => {
   console.log("Client connected:", socket.id);
 
+  socket.on("join", (userId) => {
+    socket.join(String(userId));
+  });
+
   socket.on("disconnect", (reason) => {
     console.log("Client disconnected:", socket.id, "Reason:", reason);
   });
