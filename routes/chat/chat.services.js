@@ -3,11 +3,16 @@ const User = require("../../models/User");
 
 const sendMessage = async (data, io) => {
   const message = await Chat.query().insert(data);
+  
+  // Fetch the complete message with all fields to ensure we have created_at and is_read
+  const completeMessage = await Chat.query().findById(message.id);
+  
   const sender = await User.query()
     .findById(data.sender_id)
     .withGraphFetched("[doctorProfile, patientProfile]");
 
-  console.log(sender.doctorProfile, sender.patientProfile);
+  console.log("Inserted message:", message);
+  console.log("Complete message:", completeMessage);
 
   // Safely get profile image using optional chaining
   const senderProfileImage =
@@ -16,7 +21,13 @@ const sendMessage = async (data, io) => {
     null;
 
   return {
-    ...message,
+    id: completeMessage.id,
+    sender_id: completeMessage.sender_id,
+    receiver_id: completeMessage.receiver_id,
+    message: completeMessage.message,
+    created_at: completeMessage.created_at,
+    is_read: completeMessage.is_read,
+    appointment_id: completeMessage.appointment_id,
     sender_name: sender.full_name,
     sender_profile_image: senderProfileImage,
   };
@@ -30,7 +41,7 @@ const fetchAppointmentMessages = async (appointmentId) => {
     )
     .orderBy("created_at", "asc");
 
-  return messages.map((message) => {
+  const processedMessages = messages.map((message) => {
     // Get sender profile information
     const senderProfileImage =
       message.sender?.doctorProfile?.profile_image ||
@@ -50,6 +61,8 @@ const fetchAppointmentMessages = async (appointmentId) => {
       sender_profile_image: senderProfileImage,
     };
   });
+
+  return processedMessages;
 };
 
 module.exports = {
