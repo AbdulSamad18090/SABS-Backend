@@ -59,8 +59,20 @@ io.on("connection", (socket) => {
     socket.join(String(userId));
   });
 
-  socket.on("disconnect", (reason) => {
-    console.log("Client disconnected:", socket.id, "Reason:", reason);
+  socket.on("call-user", ({ to, offer }) => {
+    io.to(String(to)).emit("incoming-call", { from: socket.id, offer });
+  });
+
+  socket.on("answer-call", ({ to, answer }) => {
+    io.to(String(to)).emit("call-answered", { from: socket.id, answer });
+  });
+
+  socket.on("ice-candidate", ({ to, candidate }) => {
+    io.to(String(to)).emit("ice-candidate", { from: socket.id, candidate });
+  });
+
+  socket.on("disconnect", () => {
+    console.log("Client disconnected:", socket.id);
   });
 });
 
